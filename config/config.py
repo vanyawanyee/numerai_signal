@@ -4,6 +4,8 @@ import toml
 from pathlib import Path
 
 ROOT_DIR = Path(os.getcwd())
+INPUT_DIR = ROOT_DIR.joinpath('data')
+OUTPUT_DIR = ROOT_DIR.joinpath('submission_output')
 
 def read_toml_config(file_name:str):
     file_path = ROOT_DIR.joinpath('config/' + file_name)
@@ -30,15 +32,9 @@ def download_file(file_config_dict):
 
 
 # read config
-config = read_toml_config("config.toml")
-if config:
-    print(config)
+config_dict = read_toml_config("config.toml")
+if config_dict:
+    print(config_dict)
 
-# download required jar files
-for value in config['setup_files'].values():
-    download_file(value)
 
-# configurate pyspark env variable
-pyspark_env_var_path = f"--jars {ROOT_DIR.joinpath('rapids-4-spark_2.12-21.12.0.jar')}," \
-                       f"{ROOT_DIR.joinpath('cudf-21.12.2-cuda11.jar')} --master local[*] pyspark-shell"
-os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_env_var_path
+

@@ -7,3 +7,11 @@ output_file = "cudf-21.12.2-cuda11.jar"
 [setup_files.jar2]
 url = "https://repo1.maven.org/maven2/com/nvidia/rapids-4-spark_2.12/21.12.0/rapids-4-spark_2.12-21.12.0.jar"
 output_file = "rapids-4-spark_2.12-21.12.0.jar"
+
+[run_parameter]
+START = 800
+END = 1200
+FETCH_VIA_API = false # Set FETCH_VIA_API = True if you want to fetch the data via API
+SEED = 46
+DS_OVERRIDE = true
+CURRENT_DS_OVERRIDE = 539 # what is this?
