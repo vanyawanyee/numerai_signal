@@ -23,7 +23,7 @@ def initialization():
     # spark.conf.set("spark.jars.repositories", "https://mmlspark.azureedge.net/maven")
     # spark.conf.set("spark.jars.packages", "com.microsoft.azure:synapseml_2.12:0.11.1")
 
-    napi = numerapi.SignalsAPI()
+    napi = numerapi.NumerAPI()
     current_ds = napi.get_current_round()
     print(f'{len(config_dict["setup_files"])} files are downloaded.'
           f'The spark session is initiated.'
