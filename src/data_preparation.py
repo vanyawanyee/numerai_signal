@@ -3,10 +3,11 @@ from config.config import  ROOT_DIR, config_dict
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import lit, col, to_date
 from pyspark.sql.types import StringType
+from datetime import datetime, timedelta
 
-# spark, napi = initialization()
+spark, napi = initialization()
 
-spark = SparkSession.builder.appName("numerai").getOrCreate()
+# spark = SparkSession.builder.appName("numerai").getOrCreate()
 
 def load_ticker(ticker_file_name:str):
     ticker_path = ROOT_DIR.joinpath('data/'+ticker_file_name)
@@ -20,7 +21,6 @@ def load_ticker(ticker_file_name:str):
     # )
     return df_ticker
 
-df_ticker_check = df_ticker.toPandas()
 
 def load_train_validation_data(mode='local'):
     train_file = config_dict['DATA']['train_file']
@@ -80,5 +80,34 @@ def combine_sector_and_yahoo_price_data(df_yahoo_data, df_sector):
     return sector_close_volume
 
 
+def load_modelling_data():
+    df_yahoo_data = load_yahoo_price_data()
+    df_sector_data = load_sector_data()
+    df_yahoo_sector_data = combine_sector_and_yahoo_price_data(df_yahoo_data, df_sector_data)
+
+    df_train_validation_full_data = load_train_validation_data()
+
+    return df_train_validation_full_data, df_yahoo_sector_data
 
 
+def get_friday_date(start_date, end_date=datetime.today().date()):
+    """
+    this function returns a list of string of dates that fall on Friday
+    params:
+    start_iter_date -> given in date/str format e.g. date(yyyy,MM,dd) | 'YYYY-mm-dd'
+    end_date -> default value is today
+
+    example
+    get_friday_date(date(2020,2,28))
+    """
+    if type(start_date) == str:
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+    friday_date = []
+    while start_date <= end_date:
+        if start_date.weekday() == 4:
+            friday_date.append(start_date.strftime('%Y-%m-%d'))
+            start_date = start_date + timedelta(weeks=1)
+        else:
+            start_date = start_date + timedelta(days=1)
+
+    return friday_date
