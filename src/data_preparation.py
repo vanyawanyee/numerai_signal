@@ -3,6 +3,7 @@ from config.config import  ROOT_DIR, config_dict
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import lit, col, to_date
 from pyspark.sql.types import StringType
+from pyspark.sql import Row
 from datetime import datetime, timedelta
 
 spark, napi = initialization()
@@ -111,3 +112,17 @@ def get_friday_date(start_date, end_date=datetime.today().date()):
             start_date = start_date + timedelta(days=1)
 
     return friday_date
+
+
+def create_pyspark_dataframe_from_list(data_list:list,column_name:str):
+    rdd_from_list = spark.sparkContext.parallelize(data_list)
+    row_element = rdd_from_list.map(lambda x: Row(x))
+    df_from_list = spark.createDataFrame(row_element, [column_name])
+
+    return df_from_list
+
+
+def create_friday_date_dataframe():
+    friday_start_date = config_dict['RUN_PARAMETER']['friday_start_date']
+    df_friday_date = create_pyspark_dataframe_from_list(get_friday_date(friday_start_date), 'friday_date')
+    return df_friday_date

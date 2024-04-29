@@ -21,6 +21,7 @@ FETCH_VIA_API = false # Set FETCH_VIA_API = True if you want to fetch the data v
 SEED = 46
 DS_OVERRIDE = true
 CURRENT_DS_OVERRIDE = 539 # what is this?
+friday_start_date = 2024-01-01
 
 [TICKER_CTRY_MAP]
 AU= "AU"
