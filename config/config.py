@@ -33,8 +33,7 @@ def download_file(file_config_dict):
 
 # read config
 config_dict = read_toml_config("config.toml")
-if config_dict:
-    print(config_dict)
+efficient_frontier_config = read_toml_config('efficient_frontier.toml')
 
 
 
