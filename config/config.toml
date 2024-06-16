@@ -8,10 +8,68 @@ output_file = "cudf-21.12.2-cuda11.jar"
 url = "https://repo1.maven.org/maven2/com/nvidia/rapids-4-spark_2.12/21.12.0/rapids-4-spark_2.12-21.12.0.jar"
 output_file = "rapids-4-spark_2.12-21.12.0.jar"
 
-[run_parameter]
+[DATA]
+train_file='signals/v1.0/train.parquet'
+validation_file='signals/v1.0/validation.parquet'
+yahoo_price_file='data/yahoo_price.parquet'
+sector_file='data/eds_universe_public_data.csv'
+
+[RUN_PARAMETER]
 START = 800
 END = 1200
 FETCH_VIA_API = false # Set FETCH_VIA_API = True if you want to fetch the data via API
 SEED = 46
 DS_OVERRIDE = true
 CURRENT_DS_OVERRIDE = 539 # what is this?
+friday_start_date = 2024-01-01
+
+[TICKER_CTRY_MAP]
+AU= "AU"
+AV= "AT"
+BB= "BE"
+BZ= "BR"
+CA= "CA"
+CB= "CO"
+CH= "CN"
+CI= "CL"
+CN= "CA"
+CP= "CZ"
+DC= "DK"
+EY= "EG"
+FH= "FI"
+FP= "FR"
+GA= "GR"
+GR= "DE"
+GY= "DE"
+HB= "HU"
+HK= "HK"
+ID= "IE"
+IJ= "ID"
+IM= "IT"
+IN= "IN"
+IT= "IL"
+JP= "JP"
+KS= "KR"
+LN= "GB"
+MF= "MX"
+MK= "MY"
+NA= "NL"
+NO= "NO"
+NZ= "NZ"
+PE= "PE"
+PL= "PT"
+PM= "PH"
+PW= "PL"
+QD= "QA"
+RM= "RU"
+SJ= "ZA"
+SM= "ES"
+SP= "SG"
+SS= "SE"
+SW= "CH"
+TB= "TH"
+TI= "TR"
+TT= "TW"
+UH= "AE"
+US= "US"
+UQ= "US"
