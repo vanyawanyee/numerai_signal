@@ -47,16 +47,24 @@ if config_dict:
 
     # Run parameters
     RUN_PARAMS = config_dict.get('run_parameter', {})
-    START_DATE = RUN_PARAMS.get('START', "2010-01-01")
-    END_DATE = RUN_PARAMS.get('END', "2023-12-31")
+    START_DATE = str(RUN_PARAMS.get('START', "2010-01-01"))
+    END_DATE = str(RUN_PARAMS.get('END', "2023-12-31"))
     FETCH_VIA_API = RUN_PARAMS.get('FETCH_VIA_API', False)
     SEED = RUN_PARAMS.get('SEED', 42)
     DS_OVERRIDE = RUN_PARAMS.get('DS_OVERRIDE', False)
     CURRENT_DS_OVERRIDE = RUN_PARAMS.get('CURRENT_DS_OVERRIDE', None)
 
     # Other configurations
-    FRED_API_KEY = os.environ.get('FRED_API_KEY', 'your_fred_api_key_here')
+    FRED_API_KEY = os.environ.get('FRED_API_KEY')
+    if not FRED_API_KEY:
+        print("Warning: FRED_API_KEY not set in environment variables. Using dummy data for economic indicators.")
+        FRED_API_KEY = 'dummy_key'
+
     NUMERAI_DATASET = "signals/v1.0/train.parquet"
+
+    # Ensure Numerai dataset directory exists
+    NUMERAI_DIR = INPUT_DIR.joinpath(NUMERAI_DATASET).parent
+    NUMERAI_DIR.mkdir(parents=True, exist_ok=True)
 
     # Model parameters
     LGBM_PARAMS = {
@@ -102,4 +110,25 @@ if config_dict:
 else:
     print("Failed to load configuration. Using default values.")
     # Define default values here
+    START_DATE = "2010-01-01"
+    END_DATE = "2023-12-31"
+    FETCH_VIA_API = False
+    SEED = 42
+    DS_OVERRIDE = False
+    CURRENT_DS_OVERRIDE = None
+    FRED_API_KEY = 'dummy_key'
+    NUMERAI_DATASET = "signals/v1.0/train.parquet"
+    LGBM_PARAMS = {"num_leaves": 31, "max_depth": -1, "learning_rate": 0.05, "n_estimators": 100}
+    NN_PARAMS = {"layers": [64, 32, 16], "dropout_rate": 0.2, "learning_rate": 0.001, "epochs": 100, "batch_size": 32}
+    H2O_PARAMS = {"max_models": 20, "seed": SEED, "max_runtime_secs": 300}
+    SPARK_CONFIG = {
+        "app_name": "FinancialModelingPipeline",
+        "master": "local[*]",
+        "packages": ["com.microsoft.azure:synapseml_2.12:1.0.5", "org.apache.hadoop:hadoop-aws:3.2.0"],
+        "repositories": ["https://mmlspark.azureedge.net/maven"]
+    }
+    RAPIDS_CONFIG = {"use_gpu": True, "gpu_memory_fraction": 0.8}
 
+# Ensure NUMERAI_DIR exists
+NUMERAI_DIR = INPUT_DIR.joinpath(NUMERAI_DATASET).parent
+NUMERAI_DIR.mkdir(parents=True, exist_ok=True)
