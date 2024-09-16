@@ -7,7 +7,7 @@ scikit-learn==1.4.2
 # Machine Learning
 lightgbm==4.3.0
 h2o==3.46.0.1
-tensorflow==2.15.0
+tensorflow==2.16.2  # Updated to latest stable version compatible with Python 3.12
 pycaret==3.3.1
 
 # Big Data and Spark
@@ -20,7 +20,7 @@ seaborn==0.13.2
 plotly==5.21.0
 
 # Financial Data
-yfinance==0.2.36 
+yfinance==0.2.36
 fredapi==0.5.1
 numerapi==2.18.0
 
@@ -38,19 +38,20 @@ Flask==3.0.3
 dash==2.16.1
 
 # RAPIDS (for GPU acceleration)
-cudf==23.12.0  
-cuml==23.12.0 
+# Note: RAPIDS might not be compatible with Python 3.12. You may need to comment these out.
+# cudf==23.12.0
+# cuml==23.12.0
 
 # Additional useful libraries
 statsmodels==0.14.2
-pmdarima==2.0.4  # For time series forecasting
-sktime==0.26.0  # For time series analysis
+pmdarima==2.0.4
+sktime==0.26.0
 
 # Development and testing
-pytest==8.0.0  
+pytest==8.0.0
 
 # Other dependencies from original list that might be relevant
 adagio==0.2.4
 category-encoders==2.6.3
 imbalanced-learn==0.12.2
-pyod==1.1.3  # For outlier detection
+pyod==1.1.3
