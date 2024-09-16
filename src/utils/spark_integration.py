@@ -2,8 +2,14 @@ from pyspark.sql import SparkSession
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import StringIndexer, VectorAssembler, OneHotEncoder
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
-from synapse.ml.lightgbm import LightGBMClassifier
 import yfinance as yf
+
+try:
+    from synapse.ml.lightgbm import LightGBMClassifier
+    SYNAPSE_AVAILABLE = True
+except ImportError:
+    print("Synapse ML not available. LightGBM on Spark will not be available.")
+    SYNAPSE_AVAILABLE = False
 
 def create_spark_session():
     return (SparkSession.builder.appName("DAXPrediction")
@@ -62,6 +68,10 @@ def evaluate_spark_model(model, df_transformed):
     return auc
 
 def run_spark_lgbm_model():
+    if not SYNAPSE_AVAILABLE:
+        print("Synapse ML is not available. Skipping Spark LightGBM model.")
+        return None
+
     spark = create_spark_session()
     df_pandas = load_dax_data()
     df_transformed = prepare_spark_data(spark, df_pandas)

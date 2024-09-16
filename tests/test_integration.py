@@ -9,7 +9,7 @@ from src.data.data_loader import load_market_data, load_economic_indicators
 from src.features.feature_engineering import engineer_features
 from src.models.model_training import train_models
 from src.models.model_evaluation import evaluate_models
-from src.utils.spark_integration import run_spark_lgbm_model
+from src.utils.spark_integration import run_spark_lgbm_model, SYNAPSE_AVAILABLE
 from src.data.numerai_integration import download_numerai_data, process_numerai_data
 from config.config import START_DATE, END_DATE, FRED_API_KEY
 
@@ -35,8 +35,11 @@ def test_full_pipeline(sample_data):
     assert 'dax' in results and 'tesla' in results, "Should have results for both DAX and Tesla"
     
     # Test Spark integration
-    spark_auc = run_spark_lgbm_model()
-    assert isinstance(spark_auc, float), "Spark AUC should be a float"
+    if SYNAPSE_AVAILABLE:
+        spark_auc = run_spark_lgbm_model()
+        assert isinstance(spark_auc, float), "Spark AUC should be a float"
+    else:
+        print("Synapse ML not available. Skipping Spark LightGBM test.")
     
     # Test Numerai integration
     numerai_data = download_numerai_data()
