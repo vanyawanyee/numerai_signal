@@ -1,5 +1,11 @@
 import pytest
 import pandas as pd
+import sys
+import os
+
+# Add the project root directory to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.data.data_loader import load_market_data, load_economic_indicators
 from config.config import START_DATE, END_DATE, FRED_API_KEY
 

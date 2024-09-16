@@ -1,5 +1,11 @@
 import pytest
+import sys
+import os
 from pathlib import Path
+
+# Add the project root directory to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from config.config import (
     ROOT_DIR, INPUT_DIR, PROCESSED_DIR, OUTPUT_DIR,
     read_toml_config, START_DATE, END_DATE, FETCH_VIA_API,

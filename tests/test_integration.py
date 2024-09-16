@@ -1,4 +1,10 @@
 import pytest
+import sys
+import os
+
+# Add the project root directory to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.data.data_loader import load_market_data, load_economic_indicators
 from src.features.feature_engineering import engineer_features
 from src.models.model_training import train_models
