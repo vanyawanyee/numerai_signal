@@ -7,6 +7,7 @@ from pyspark.sql import Row
 from datetime import datetime, timedelta
 
 spark, napi = initialization()
+full_run = config_dict['RUN_PARAMETER']['full_run']
 
 # spark = SparkSession.builder.appName("numerai").getOrCreate()
 
@@ -29,8 +30,7 @@ def load_train_validation_data(mode='local'):
     if mode == 'update':
         napi.download_dataset(train_file)
         napi.download_dataset(validation_file)
-    else:
-        pass
+
 
     df_train_path = ROOT_DIR.joinpath(train_file)
     df_validation_path = ROOT_DIR.joinpath(validation_file)
@@ -81,16 +81,6 @@ def combine_sector_and_yahoo_price_data(df_yahoo_data, df_sector):
     return sector_close_volume
 
 
-def load_modelling_data():
-    df_yahoo_data = load_yahoo_price_data()
-    df_sector_data = load_sector_data()
-    df_yahoo_sector_data = combine_sector_and_yahoo_price_data(df_yahoo_data, df_sector_data)
-
-    df_train_validation_full_data = load_train_validation_data()
-
-    return df_train_validation_full_data, df_yahoo_sector_data
-
-
 def get_friday_date(start_date, end_date=datetime.today().date()):
     """
     this function returns a list of string of dates that fall on Friday
@@ -126,3 +116,56 @@ def create_friday_date_dataframe():
     friday_start_date = config_dict['RUN_PARAMETER']['friday_start_date']
     df_friday_date = create_pyspark_dataframe_from_list(get_friday_date(friday_start_date), 'friday_date')
     return df_friday_date
+
+
+
+def load_input_data():
+    df_yahoo_data = load_yahoo_price_data()
+    df_sector_data = load_sector_data()
+    df_train_validation_full_data = load_train_validation_data()
+    df_friday_date = create_friday_date_dataframe()
+
+    return df_yahoo_data, df_sector_data, df_train_validation_full_data, df_friday_date
+
+
+def process_data(df_yahoo_data, df_sector_data, df_train_validation_full_data, df_friday_date):
+
+    df_yahoo_sector_data = combine_sector_and_yahoo_price_data(df_yahoo_data, df_sector_data)
+
+    # keep only records on friday
+    df_yahoo_friday_price = (
+        df_yahoo_sector_data
+        .join(df_friday_date, [df_yahoo_sector_data.date == df_friday_date.friday_date], how='inner'
+        )
+        #.withColumnRenamed('friday_date', 'fri_date')
+    )
+
+    df_full_data = (
+        df_train_validation_full_data
+        .alias('numerai')
+        .join(df_yahoo_friday_price.alias('yahoo').drop(col('yahoo.date')),
+              (col('yahoo.ticker') == col('numerai.numerai_ticker')) &
+              (col('yahoo.friday_date') == col('numerai.date')),
+              how='right'
+              )
+        .drop(col('numerai.numerai_ticker'))
+    )
+
+    df_full_data_subset = (
+        df_full_data
+        .select(
+            col('ticker'),
+            col('SEDOL'),
+            col('date'),
+            col('data_type'),
+            col('Close'),
+            col('High'),
+            col('Low'),
+            col('Volume'),
+            col('GICS_subindustry'),
+            col('friday_date'),
+            col('target')
+        )
+    )
+
+    return df_full_data_subset
