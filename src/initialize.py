@@ -4,21 +4,21 @@ from pyspark.sql import SparkSession
 import numerapi
 from config.config import ROOT_DIR, config_dict, download_file
 
-
 # configurate pyspark env variable
-pyspark_env_var_path = f"--jars {ROOT_DIR.joinpath('rapids-4-spark_2.12-21.12.0.jar')}," \
-                       f"{ROOT_DIR.joinpath('cudf-21.12.2-cuda11.jar')} --master local[*] pyspark-shell"
-os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_env_var_path
+# pyspark_env_var_path = f"--jars {ROOT_DIR.joinpath('rapids-4-spark_2.12-21.12.0.jar')}," \
+#                        f"{ROOT_DIR.joinpath('cudf-21.12.2-cuda11.jar')} --master local[*] pyspark-shell"
+# os.environ['PYSPARK_SUBMIT_ARGS'] = pyspark_env_var_path
 
 # Initialize SparkSession
-def initialization():
-    # download required jar files
-    for value in config_dict['setup_files'].values():
-        download_file(value)
+def initialization(mode='local'):
+    if mode == 'update':
+        # download required jar files
+        for value in config_dict['setup_files'].values():
+            download_file(value)
 
     spark = SparkSession.builder.appName("numerai").getOrCreate()
 
-    # spark.sparkContext.addPyFile("path/to/your/additional.jar")
+    # spark.sparkContext.addPyFile(pyspark_env_var_path)
     # # Additional configuration for packages
     # spark.conf.set("spark.jars.repositories", "https://mmlspark.azureedge.net/maven")
     # spark.conf.set("spark.jars.packages", "com.microsoft.azure:synapseml_2.12:0.11.1")
@@ -31,3 +31,5 @@ def initialization():
 
     return spark, napi
 
+if __name__ == '__main__':
+    spark, napi = initialization(mode='local')

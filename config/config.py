@@ -3,7 +3,7 @@ import os
 import toml
 from pathlib import Path
 
-ROOT_DIR = Path(os.getcwd())
+ROOT_DIR = Path(__file__).parents[1]
 INPUT_DIR = ROOT_DIR.joinpath('data')
 OUTPUT_DIR = ROOT_DIR.joinpath('submission_output')
 
