@@ -1,3 +1,31 @@
+# Data processing and analysis
+numpy==1.26.4
+pandas==2.1.4
+scipy==1.11.4
+scikit-learn==1.4.2
+
+# Machine Learning
+lightgbm==4.3.0
+h2o==3.46.0.1
+tensorflow==2.16.2  # Updated to latest stable version compatible with Python 3.12
+pycaret==3.3.1
+
+# Big Data and Spark
+pyspark==3.5.1
+findspark==2.0.1
+
+# Data Visualization
+matplotlib==3.7.5
+seaborn==0.13.2
+plotly==5.21.0
+
+# Financial Data
+yfinance==0.2.36
+fredapi==0.5.1
+numerapi==2.18.0
+
+# Utilities
+requests==2.31.0
 adagio==0.2.4
 antlr4-python3-runtime==4.11.1
 anyio==4.3.0
@@ -160,7 +188,33 @@ threadpoolctl==3.4.0
 tinycss2==1.2.1
 toml==0.10.2
 tornado==6.4
-tqdm==4.66.2
+tqdm==4.66.5
+# Jupyter and IPython
+ipython==8.23.0
+jupyter_core==5.7.2
+
+# Web Framework (for potential dashboard)
+Flask==3.0.3
+dash==2.16.1
+
+# RAPIDS (for GPU acceleration)
+# Note: RAPIDS might not be compatible with Python 3.12. You may need to comment these out.
+# cudf==23.12.0
+# cuml==23.12.0
+
+# Additional useful libraries
+statsmodels==0.14.2
+pmdarima==2.0.4
+sktime==0.26.0
+
+# Development and testing
+pytest==8.0.0
+
+# Other dependencies from original list that might be relevant
+adagio==0.2.4
+category-encoders==2.6.3
+imbalanced-learn==0.12.2
+pyod==1.1.3
 traitlets==5.14.2
 triad==0.9.6
 tsdownsample==0.1.3
@@ -180,3 +234,4 @@ xxhash==3.4.1
 yellowbrick==1.5
 yfinance==0.2.40
 zipp==3.18.1
+
