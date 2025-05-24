@@ -7,6 +7,8 @@ from pathlib import Path
 ROOT_DIR = Path(os.getcwd())
 INPUT_DIR = ROOT_DIR.joinpath('data', 'raw')
 PROCESSED_DIR = ROOT_DIR.joinpath('data', 'processed')
+ROOT_DIR = Path(__file__).parents[1]
+INPUT_DIR = ROOT_DIR.joinpath('data')
 OUTPUT_DIR = ROOT_DIR.joinpath('submission_output')
 
 # Ensure directories exist
@@ -39,7 +41,6 @@ def download_file(file_config_dict):
 
 # Read config
 config_dict = read_toml_config("config.toml")
-
 if config_dict:
     # Setup files
     for file_key, file_config in config_dict.get('setup_files', {}).items():
@@ -149,6 +150,8 @@ if config_dict:
         "MODEL_FOR_SUBMISSION": submission_params_from_toml.get("MODEL_FOR_SUBMISSION", f"lgbm_{FEATURE_SELECTION_PARAMS['TARGET_COLUMN_NAME']}"),
         "LIVE_DATA_FILENAME": submission_params_from_toml.get("LIVE_DATA_FILENAME", "live.parquet")
     }
+
+efficient_frontier_config = read_toml_config('efficient_frontier.toml')
 
 
 else:

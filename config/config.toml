@@ -8,10 +8,91 @@ output_file = "cudf-21.12.2-cuda11.jar"
 url = "https://repo1.maven.org/maven2/com/nvidia/rapids-4-spark_2.12/21.12.0/rapids-4-spark_2.12-21.12.0.jar"
 output_file = "rapids-4-spark_2.12-21.12.0.jar"
 
-[run_parameter]
+[DATA]
+train_file='signals/v1.0/train.parquet'
+validation_file='signals/v1.0/validation.parquet'
+yahoo_price_file='data/yahoo_price.parquet'
+sector_file='data/eds_universe_public_data.csv'
+
+[RUN_PARAMETER]
 START = 800
 END = 1200
 FETCH_VIA_API = false # Set FETCH_VIA_API = True if you want to fetch the data via API
 SEED = 46
 DS_OVERRIDE = true
 CURRENT_DS_OVERRIDE = 539 # what is this?
+friday_start_date = 2024-01-01
+full_run = false
+
+[FEATURE_NAMES]
+variable_name1 = "feature_sdf"
+variable_name2 = "train_sdf"
+variable_name3 = "test_sdf"
+variable_name4 = "live_sdf"
+variable_name5 = "featuresCols"
+variable_name6 = "col_names"
+variable_name7 = "gbt_model"
+variable_name8 = "train_output_sdf"
+variable_name9 = "test_output_sdf"
+variable_name10 = "live_output_sdf"
+variable_name11 = "predictions_val"
+variable_name12 = "predictions"
+variable_name13 = "pred"
+variable_name14 = "predictions_live"
+variable_name15 = "pred_pd"
+variable_name16 = "Signals_s_pred_gbt_"
+variable_name17 = "Signals_bins_gbt_"
+variable_name18 = "Signals_pycaret_best_"
+variable_name19 = "Signals_pycaret_worst_"
+variable_name20 = "predictions_live_full"
+
+[TICKER_CTRY_MAP]
+AU= "AU"
+AV= "AT"
+BB= "BE"
+BZ= "BR"
+CA= "CA"
+CB= "CO"
+CH= "CN"
+CI= "CL"
+CN= "CA"
+CP= "CZ"
+DC= "DK"
+EY= "EG"
+FH= "FI"
+FP= "FR"
+GA= "GR"
+GR= "DE"
+GY= "DE"
+HB= "HU"
+HK= "HK"
+ID= "IE"
+IJ= "ID"
+IM= "IT"
+IN= "IN"
+IT= "IL"
+JP= "JP"
+KS= "KR"
+LN= "GB"
+MF= "MX"
+MK= "MY"
+NA= "NL"
+NO= "NO"
+NZ= "NZ"
+PE= "PE"
+PL= "PT"
+PM= "PH"
+PW= "PL"
+QD= "QA"
+RM= "RU"
+SJ= "ZA"
+SM= "ES"
+SP= "SG"
+SS= "SE"
+SW= "CH"
+TB= "TH"
+TI= "TR"
+TT= "TW"
+UH= "AE"
+US= "US"
+UQ= "US"
